@@ -14,8 +14,6 @@
             $uriDelete = substr($_SERVER['REQUEST_URI'], 0, 37);
             $uriUpdate = [substr($uri, 0, 29), substr($uri, strlen($uri) - 7, strlen($uri))];
             $uriNew = explode('/', $uri);
-            //var_dump($uriNew);
-
 
             /* Here is where you will pass note onto the database through your database connection, which Note class extends to */
 
@@ -45,13 +43,7 @@
                 require_once '../views/goback.view.php';
 
 
-            } else {
-
-
-               //echo '<br>'.substr($_SERVER['REQUEST_URI'], 0, 29);
-
-
-             }
+            }
 
 
         //VIEW
