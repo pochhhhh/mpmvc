@@ -1,9 +1,10 @@
 <?php
 
-    require_once 'controllers/Note.php';
-    require_once 'router.php';
+    //require_once 'controllers/Note.php';
     require_once 'config.php';
     require_once 'database.php';
+	require_once 'controllers/Home.php';
 
-    $router = new Router;
+	$database = new Database();
+	$database -> connect();
 

@@ -1,100 +1,76 @@
 <?php
 
+    require_once '../database.php';
 
-    class Note
+
+    class Note extends Database
     {
 
-        private $host = 'localhost';
-        private $user = 'root';
-        private $password = 'root';
-        private $dbname = 'MPMVC';
-        private $PDOConnect;
-        
+        public function __construct()
+        {
 
-        //This controller is activated when a user adds a note to the database
-        //User can add note and remove note
-        //Include two methods that either add note to DB or remove note from DB
-        //Use PDO to add the note to DB
-        /*First, try to establish a DB connection. Then var dump everything. Add/Delete after */
+            $uri = $_SERVER['REQUEST_URI'];
+            $uriAdd = substr($_SERVER['REQUEST_URI'], 22, 7);
+            $uriDelete = substr($_SERVER['REQUEST_URI'], 0, 37);
+            $uriUpdate = [substr($uri, 0, 29), substr($uri, strlen($uri) - 7, strlen($uri))];
+            $uriNew = explode('/', $uri);
+            //var_dump($uriNew);
 
-        
-        public function connect(){
 
-            $DSN = 'mysql:host='.$this ->host.';dbname='.$this -> dbname;
-      
+            /* Here is where you will pass note onto the database through your database connection, which Note class extends to */
 
-            try{
+            if($uriAdd === 'addNote'){
 
-                $this -> PDOConnect = new PDO($DSN, $this -> user, $this -> password);
+                $this -> addNote($_REQUEST);
 
-            } catch(PDOException $e){
-
-                die('connection unsuccessful');
+                require_once '../views/goback.view.php';
 
 
             }
 
-            $statement = $this -> PDOConnect;
+            if($uriUpdate[0] === '/controllers/Note.php?change='){
 
-            $statement = $statement -> prepare('select * from Notes');
+    
+                $this -> updateNote($previousNote, $_REQUEST['change']);
 
-            $statement -> execute();
+                require_once '../views/goback.view.php';
 
-            var_dump($statement -> fetchAll());
+
+            }
+
+            if($uriDelete === '/controllers/Note.php?change=&delete='){
+
+                $this -> deleteNote($_REQUEST['delete']);
+
+                require_once '../views/goback.view.php';
+
+
+            } else {
+
+
+               // var_dump($_SERVER).'<br> <br>';
+
+
+             }
+
+
+        //VIEW
+
+
 
         }
 
-        public function showNotes(){
 
+        public function view()
+        {
 
-
-        }
-
-
-        
-        public function addNoteToDB(){
-
-
-
+            require_once '../views/notes.view.php';
 
 
         }
-
-        public function deleteNoteFromDB(){
-
-
-
-            
-        }
-
-
-
-
 
 
 
     }
 
-
-    if(strlen($_SERVER['QUERY_STRING']) > 8){
-
-        $newNote = $_GET['addnote'];
-
-        echo $newNote;
-
-
-        $noteController = new Note;
-        $noteController -> connect();
-        $noteController -> showNotes();
-
-        //pass $newNote and store it in the database
-
-        //var_dump($statement -> fetchAll());
-
-        //require '../database.php';
-
-        //Add $newNote to DB;
-
-    }
-
-
+    $note = new Note();
