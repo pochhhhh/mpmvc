@@ -38,7 +38,7 @@
 
             }
 
-            if($uriDelete === '/controllers/Note.php?change=&delete='){
+            if(substr($_SERVER['REQUEST_URI'], 0, 29) === '/controllers/Note.php?delete='){
 
                 $this -> deleteNote($_REQUEST['delete']);
 
@@ -48,7 +48,7 @@
             } else {
 
 
-               // var_dump($_SERVER).'<br> <br>';
+               //echo '<br>'.substr($_SERVER['REQUEST_URI'], 0, 29);
 
 
              }
